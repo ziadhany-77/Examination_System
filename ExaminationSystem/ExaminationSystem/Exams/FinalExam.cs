@@ -6,18 +6,16 @@ using System.Text;
 
 namespace ExaminationSystem.Exams
 {
-    internal class PracticeExam : Exam
+    internal class FinalExam : Exam
     {
-        public int Grade { get; private set; }
-
-        public PracticeExam(int timeInMins, int numberOfQuestions, Subject subject, int version)
+        public FinalExam(int timeInMins, int numberOfQuestions, Subject subject, int version)
             : base(timeInMins, numberOfQuestions, subject, version)
         { }
 
         public override void ShowExam()
         {
             Console.WriteLine("=======================================");
-            Console.WriteLine("           PRACTICE EXAM               ");
+            Console.WriteLine("             FINAL EXAM                ");
             Console.WriteLine("=======================================");
             Console.WriteLine(ToString());
             Console.WriteLine("---------------------------------------");
@@ -32,10 +30,10 @@ namespace ExaminationSystem.Exams
         public override void Finish()
         {
             Mode = ExamMode.Finished;
-            Grade = CorrectExam();
+            CorrectExam(); // calculate internally — but never reveal
 
             Console.WriteLine("\n=======================================");
-            Console.WriteLine("           EXAM RESULTS                ");
+            Console.WriteLine("        YOUR SUBMITTED ANSWERS         ");
             Console.WriteLine("=======================================");
 
             foreach (var item in QuestionAnswerDictionary)
@@ -45,31 +43,15 @@ namespace ExaminationSystem.Exams
 
                 Console.WriteLine($"\nQ: {q.Body}");
 
-                // Student's answers
-                Console.Write("Your Answer(s):   ");
+                Console.Write("Your Answer(s): ");
                 foreach (Answer a in studentAnswers)
                     Console.Write($"{a.Text}  ");
                 Console.WriteLine();
-
-                // Correct answer(s)
-                if (q is ChooseAllQuestion chooseAll)
-                {
-                    Console.Write("Correct Answer(s): ");
-                    foreach (Answer a in chooseAll.CorrectAnswers)
-                        Console.Write($"{a.Text}  ");
-                }
-                else
-                {
-                    Console.WriteLine($"Correct Answer:    {q.CorrectAnswer.Text}");
-                }
-
-                // Per-question result
-                bool correct = q.CheckAnswer(studentAnswers);
-                Console.WriteLine($"Result: {(correct ? "✓ Correct" : "✗ Wrong")}");
             }
 
             Console.WriteLine("---------------------------------------");
-            Console.WriteLine($"Final Grade: {Grade}");
+            Console.WriteLine("Your answers have been submitted.");
+            Console.WriteLine("Results will be announced later.");
             Console.WriteLine("=======================================\n");
         }
     }

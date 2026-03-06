@@ -7,6 +7,7 @@ namespace ExaminationSystem.Exams
     internal enum ExamMode {
         Starting,
         Queued,
-        Finished
+        Finished,
+        InProgress
     }
 }

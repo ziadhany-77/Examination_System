@@ -21,16 +21,18 @@ namespace ExaminationSystem
         public void EnrollStudent(Student? student)
         {
             if (student == null) return;
+
             for (int i = 0; i < _enrolledStudents.Length; i++)
             {
-                if (student.ID == _enrolledStudents[i].ID) return;
-                if (_enrolledStudents[i] == null)
+                if (_enrolledStudents[i] == null)           // empty slot → enroll here
                 {
                     _enrolledStudents[i] = student;
                     return;
                 }
+                if (_enrolledStudents[i].ID == student.ID)  // already enrolled → skip
+                    return;
             }
-            throw new InvalidOperationException("Subject is full. Cannot enroll more students.");
+            throw new InvalidOperationException("Subject is full.");
         }
     }
 }

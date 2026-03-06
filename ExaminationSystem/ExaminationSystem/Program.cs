@@ -1,4 +1,5 @@
 ﻿using ExaminationSystem.Answers;
+using ExaminationSystem.Exams;
 using ExaminationSystem.Questions;
 
 namespace ExaminationSystem
@@ -7,6 +8,146 @@ namespace ExaminationSystem
     {
         static void Main(string[] args)
         {
+
+
+            
+
+            // =============================================
+            //         EXAMINATION SYSTEM - MAIN
+            // =============================================
+
+            // ── 1. Create Subject ─────────────────────────
+            Subject mathSubject = new Subject("Mathematics", 30);
+
+            // ── 2. Create Students and Enroll ─────────────
+            Student student1 = new Student("Alice Johnson", 1001);
+            Student student2 = new Student("Bob Smith", 1002);
+            Student student3 = new Student("Carol White", 1003);
+
+            mathSubject.EnrollStudent(student1);
+            mathSubject.EnrollStudent(student2);
+            mathSubject.EnrollStudent(student3);
+
+            Console.WriteLine("=======================================");
+            Console.WriteLine("      EXAMINATION SYSTEM LOADED        ");
+            Console.WriteLine("=======================================");
+            Console.WriteLine($"Subject : {mathSubject.Name}");
+            Console.WriteLine($"Students enrolled: {mathSubject.Students.Length}");
+            foreach (Student s in mathSubject.Students)
+                if (s != null) Console.WriteLine($"  - [{s.ID}] {s.Name}");
+            Console.WriteLine();
+
+            // ── 3. Create Answers ──────────────────────────
+
+            // True/False answers
+            Answer ansTrue = new Answer("True", 1);
+            Answer ansFalse = new Answer("False", 2);
+
+            // Choose One answers
+            Answer ansA = new Answer("2", 10);
+            Answer ansB = new Answer("3", 11);
+            Answer ansC = new Answer("4", 12);
+            Answer ansD = new Answer("5", 13);
+
+            // Choose All answers
+            Answer ansPrime1 = new Answer("2", 20);
+            Answer ansPrime2 = new Answer("3", 21);
+            Answer ansPrime3 = new Answer("5", 22);
+            Answer ansNotP1 = new Answer("4", 23);
+            Answer ansNotP2 = new Answer("6", 24);
+
+            // ── 4. Create Questions ────────────────────────
+
+            // Q1 — True/False
+            TrueFalseQuestion q1 = new TrueFalseQuestion(
+                "Basic Arithmetic",
+                "Is 2 + 2 equal to 4?",
+                5,
+                ansTrue
+            );
+            q1.Answers.AddAnswer(ansTrue);
+            q1.Answers.AddAnswer(ansFalse);
+
+            // Q2 — Choose One
+            ChooseOneQuestion q2 = new ChooseOneQuestion(
+                "Multiplication",
+                "What is 2 x 2?",
+                10,
+                ansC   // correct = "4"
+            );
+            q2.Answers.AddAnswer(ansA);  // 2
+            q2.Answers.AddAnswer(ansB);  // 3
+            q2.Answers.AddAnswer(ansC);  // 4 ← correct
+            q2.Answers.AddAnswer(ansD);  // 5
+
+            // Q3 — Choose All
+            ChooseAllQuestion q3 = new ChooseAllQuestion(
+                "Prime Numbers",
+                "Select ALL prime numbers from the list:",
+                15,
+                new Answer[] { ansPrime1, ansPrime2, ansPrime3 }  // 2, 3, 5
+            );
+            q3.Answers.AddAnswer(ansPrime1);  // 2
+            q3.Answers.AddAnswer(ansPrime2);  // 3
+            q3.Answers.AddAnswer(ansPrime3);  // 5
+            q3.Answers.AddAnswer(ansNotP1);   // 4
+            q3.Answers.AddAnswer(ansNotP2);   // 6
+
+            // ── 5. Create Exams and add questions ─────────
+            PracticeExam practiceExam = new PracticeExam(30, 3, mathSubject, 1);
+            practiceExam.Questions.Add(q1);
+            practiceExam.Questions.Add(q2);
+            practiceExam.Questions.Add(q3);
+
+            FinalExam finalExam = new FinalExam(60, 3, mathSubject, 2);
+            finalExam.Questions.Add(q1);
+            finalExam.Questions.Add(q2);
+            finalExam.Questions.Add(q3);
+
+            // ── 6. Ask user to select exam type ───────────
+            Console.WriteLine("=======================================");
+            Console.WriteLine("       SELECT YOUR EXAM TYPE           ");
+            Console.WriteLine("=======================================");
+            Console.WriteLine("  1 - Practice Exam");
+            Console.WriteLine("  2 - Final Exam");
+            Console.WriteLine("=======================================");
+            Console.Write("Enter your choice: ");
+
+            Exam selectedExam;
+            int choice = 0;
+
+            while (true)
+            {
+                if (!int.TryParse(Console.ReadLine(), out choice) || (choice != 1 && choice != 2))
+                {
+                    Console.Write("Invalid choice. Please enter 1 or 2: ");
+                    continue;
+                }
+                break;
+            }
+
+            selectedExam = choice == 1 ? practiceExam : (Exam)finalExam;
+
+            Console.WriteLine();
+            Console.WriteLine($"You selected: {(choice == 1 ? "Practice Exam" : "Final Exam")}");
+            Console.WriteLine();
+
+            // ── 7. Change Mode to Starting then launch ────
+            selectedExam.Mode = ExamMode.Starting;
+
+            Console.WriteLine($"Exam Status : {selectedExam.Mode}");
+            Console.WriteLine("Starting in 3 seconds...");
+            System.Threading.Thread.Sleep(3000);
+
+            // Start() internally calls:
+            //   ShowExam() → displays exam info + questions
+            //   loops      → collects student answers
+            //   Finish()   → shows results based on exam type
+            selectedExam.Start();
+
+            #region old main
+            /*
+            
             Console.WriteLine("========================================");
             Console.WriteLine("       EXAMINATION SYSTEM TEST          ");
             Console.WriteLine("========================================\n");
@@ -184,6 +325,10 @@ namespace ExaminationSystem
             QuestionList listquestions = new("test");
             listquestions.Add(tfQ);
             listquestions.Add(chooseOneQ);
+
+
+             */
+            #endregion
         }
     }
 }

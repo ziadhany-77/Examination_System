@@ -12,3 +12,4 @@ C:\Users\Start\Desktop\ExaminationSystem\ExaminationSystem\ExaminationSystem\obj
 C:\Users\Start\Desktop\ExaminationSystem\ExaminationSystem\ExaminationSystem\obj\Debug\net10.0\ExaminationSystem.pdb
 C:\Users\Start\Desktop\ExaminationSystem\ExaminationSystem\ExaminationSystem\obj\Debug\net10.0\ExaminationSystem.genruntimeconfig.cache
 C:\Users\Start\Desktop\ExaminationSystem\ExaminationSystem\ExaminationSystem\obj\Debug\net10.0\ref\ExaminationSystem.dll
+C:\Users\Start\Desktop\ExaminationSystem\ExaminationSystem\ExaminationSystem\obj\Debug\net10.0\ExaminationSystem.sourcelink.json

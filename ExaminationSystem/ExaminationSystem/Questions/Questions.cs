@@ -23,8 +23,7 @@ namespace ExaminationSystem.Questions
 
         protected Question(string? header, string body, int marks, Answer? correctAnswer, int answerSize)
         {
-            if (correctAnswer == null)
-                throw new ArgumentNullException(nameof(correctAnswer), "Correct answer cannot be null.");
+            
             if (string.IsNullOrEmpty(header)) header = "corrupted Header";
             if (string.IsNullOrEmpty(body)) body = "corrupted Body";
             Body = body;
@@ -102,6 +101,11 @@ namespace ExaminationSystem.Questions
     {
         Answer[] _correctAnswers;
 
+        public Answer[] CorrectAnswers
+        {
+            get { return (Answer[])_correctAnswers.Clone(); }
+        }
+
         public ChooseAllQuestion(string? header, string body, int marks, Answer[] correctAnswers) 
             : base(header, body, marks,null, 5)
         {
@@ -109,7 +113,10 @@ namespace ExaminationSystem.Questions
         }
         public override bool CheckAnswer(Answer[]? studentAnswer)
         {
-            throw new NotImplementedException();
+            if (studentAnswer == null) return false;
+            var student = studentAnswer.Select(a => a.Text).OrderBy(t => t);
+            var correct = _correctAnswers.Select(a => a.Text).OrderBy(t => t);
+            return student.SequenceEqual(correct);
         }
 
         public override void Display()
